@@ -1,0 +1,117 @@
+% UCY / Daedalus customisation of the Gemini theme.
+% Shared appearance only; per-poster metadata and assets are in poster-config.tex.
+\definecolor{DaedalusBlue}{HTML}{0069AE}
+\definecolor{MinervaTeal}{HTML}{165E78}
+\definecolor{UCYGold}{HTML}{E5AA16}
+\definecolor{Ink}{HTML}{243340}
+\definecolor{PaleBlue}{HTML}{EDF5FA}
+\definecolor{PaleGold}{HTML}{FFF7DF}
+\definecolor{SectionBlue}{HTML}{245781}
+\setbeamercolor{normal text}{fg=Ink,bg=white}
+\setbeamercolor{headline}{fg=Ink,bg=PaleGold}
+\setbeamercolor{poster footer}{fg=Ink,bg=white}
+\setbeamercolor{block title}{fg=white,bg=SectionBlue}
+\setbeamercolor{block body}{fg=Ink,bg=white}
+\setbeamercolor{block title alerted}{fg=white,bg=SectionBlue}
+\setbeamercolor{block body alerted}{fg=Ink,bg=PaleBlue}
+\setbeamercolor{heading}{fg=DaedalusBlue}
+\setbeamercolor{itemize item}{fg=DaedalusBlue}
+\setbeamerfont{block title}{size=\fontsize{32}{38}\selectfont,series=\bfseries}
+\setbeamerfont{block body}{size=\fontsize{30}{38}\selectfont}
+\setbeamerfont{block body alerted}{size=\fontsize{30}{38}\selectfont}
+\setbeamerfont{headline author}{size=\fontsize{28}{34}\selectfont}
+\setbeamerfont{headline institute}{size=\fontsize{26}{32}\selectfont}
+\setbeamersize{text margin left=2.5cm,text margin right=2.5cm}
+\newif\ifprojectlogos
+% Keep full author names, with comma separators instead of wide gaps.
+\makeatletter
+\newcommand{\posterauthors}{%
+  \begingroup
+    \def\beamer@andtitle{\unskip,\space}%
+    \insertauthor
+  \endgroup
+}
+\makeatother
+% Section headings follow the reference poster: flat dark blue bars,
+% white lettering and left alignment. Replace Gemini's centred underline.
+\setbeamertemplate{block begin}{%
+  \begin{beamercolorbox}[wd=\linewidth,sep=0.35cm,leftskip=0.1cm]{block title}
+    \raggedright\usebeamerfont{block title}\hspace*{0.45cm}\strut\insertblocktitle\par
+  \end{beamercolorbox}
+  \vskip0.4cm
+  \usebeamerfont{block body}
+  \begin{beamercolorbox}[wd=\linewidth]{block body}
+    \raggedright\setlength{\parskip}{1ex}
+}
+\setbeamertemplate{block end}{%
+  \end{beamercolorbox}
+  \vspace*{2ex}
+}
+\setbeamertemplate{block alerted begin}{%
+  \begin{beamercolorbox}[wd=\linewidth,sep=0.35cm,leftskip=0.1cm]{block title alerted}
+    \raggedright\usebeamerfont{block title}\hspace*{0.45cm}\strut\insertblocktitle\par
+  \end{beamercolorbox}
+  \usebeamerfont{block body alerted}
+  \begin{beamercolorbox}[wd=\linewidth,sep=0.4cm]{block body alerted}
+    \raggedright\setlength{\parskip}{1ex}
+}
+\setbeamertemplate{block alerted end}{%
+  \end{beamercolorbox}
+  \vspace*{2ex}
+}
+\newcommand{\figureplaceholder}[2]{%
+  \begin{tikzpicture}
+    \node[draw=DaedalusBlue!35,fill=PaleBlue,rounded corners=3mm,
+      minimum width=\linewidth-2pt,minimum height=#2,align=center,
+      text width=0.85\linewidth,text=MinervaTeal] {\bfseries #1};
+  \end{tikzpicture}\par\smallskip
+}
+\setbeamertemplate{headline}{%
+  \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \vskip1.8cm
+    \hspace{2.5cm}%
+    \begin{minipage}[c]{0.14\paperwidth}
+      \centering
+      \includegraphics[width=0.11\paperwidth]{\ucylogo}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.65\paperwidth}
+      \centering
+      {\usebeamerfont{headline title}\color{DaedalusBlue}\inserttitle\par}
+      \vspace{0.6cm}
+      {\usebeamerfont{headline author}\posterauthors}%
+      \hspace{0.7cm}%
+      {\color{Ink!55}\vrule width 1pt height 0.7cm depth 0.12cm}%
+      \hspace{0.7cm}%
+      {\usebeamerfont{headline institute}\insertinstitute}\par
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.14\paperwidth}
+      \centering
+      \includegraphics[width=0.12\paperwidth]{\daedaluslogo}
+    \end{minipage}\hspace{2.5cm}
+    \par\vspace{1.6cm}
+    {\color{UCYGold}\rule{\paperwidth}{0.10cm}}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=\paperwidth]{poster footer}
+    {\color{UCYGold}\rule{\paperwidth}{0.10cm}}\par
+    \vskip0.9cm
+    \hspace{2.5cm}%
+    \begin{minipage}{\dimexpr\paperwidth-5cm\relax}
+      \begin{minipage}[c]{0.68\linewidth}
+        {\fontsize{24}{29}\selectfont\bfseries\color{DaedalusBlue}Selected references\par}
+        \vspace{0.35cm}
+        {\fontsize{22}{28}\selectfont\raggedright\posterreferences\par}
+      \end{minipage}\hfill
+      \ifprojectlogos
+        \begin{minipage}[c]{0.26\linewidth}
+          \raggedleft
+          \raisebox{-0.5\height}{\includegraphics[width=9cm,height=4.2cm,keepaspectratio]{\minervalogo}}%
+          \hspace{1.2cm}%
+          \raisebox{-0.5\height}{\includegraphics[width=13cm,height=4.2cm,keepaspectratio]{\erclogo}}
+        \end{minipage}
+      \fi
+    \end{minipage}
+    \par\vskip0.8cm
+  \end{beamercolorbox}
+}

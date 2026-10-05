@@ -1,0 +1,89 @@
+% !TeX program = lualatex
+% Main document: edit poster-config.tex for metadata and this file for content.
+% Compile with LuaLaTeX (Overleaf: Settings > Compiler > LuaLaTeX).
+\documentclass[final]{beamer}
+\usepackage{iftex}
+\ifLuaTeX\else
+  \PackageError{ucy-poster}{This template requires LuaLaTeX}
+    {Select LuaLaTeX as the compiler, then compile poster.tex again.}
+\fi
+% Change size/orientation here to match the conference's required dimensions.
+\usepackage[size=a0,orientation=landscape,scale=1.0]{beamerposter}
+\usepackage{lmodern} % Scalable mathematical fonts at poster sizes.
+\usetheme{gemini}
+\DeclareFontShape{OMX}{cmex}{m}{n}{<-> cmex10}{}
+\usepackage{graphicx}
+\usepackage{tikz}
+\input{ucy-style.tex}
+\input{poster-config.tex}
+
+% Replace all sample text, equations and figure placeholders before use.
+\begin{document}
+\begin{frame}[t]
+\vspace*{1.2cm}
+\begin{columns}[t,onlytextwidth]
+% Column widths total 0.94\textwidth; the remaining width forms two gutters.
+% LEFT COLUMN: motivation, objectives and background.
+\begin{column}{0.305\textwidth}
+  \begin{block}{1.\enspace Motivation}
+    Explain the problem and why it matters in two or three short sentences.
+    Identify the gap that your work addresses.
+  \end{block}
+  \begin{block}{Research objectives}
+    \begin{itemize}
+      \item State the central research question.
+      \item Define the specific contribution.
+      \item Explain how success is evaluated.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Background / system overview}
+    % For a real figure, replace the next line with:
+    % \includegraphics[width=\linewidth]{graphics/your-figure.pdf}
+    \figureplaceholder{System overview or motivating example}{10cm}
+    {\small Figure 1. Replace this panel with a schematic or photograph.}
+    \par\medskip
+    Add only the background needed to understand the method and results.
+  \end{block}
+\end{column}
+% MIDDLE COLUMN: method, model and contribution.
+\begin{column}{0.305\textwidth}
+  \begin{block}{2.\enspace Methodology}
+    Describe the approach briefly. Use a diagram to show the main stages.
+    \par\medskip
+    \figureplaceholder{Method / workflow diagram}{10cm}
+    {\small Figure 2. Explain the workflow in one sentence.}
+  \end{block}
+  \begin{block}{Model / experimental setup}
+    Replace the illustrative equation with your model, or remove it.
+    \[
+      \mathbf{x}_{t+1}=f(\mathbf{x}_t,\mathbf{u}_t)
+    \]
+    \begin{itemize}
+      \item Dataset or system: [description].
+      \item Baseline: [comparison method].
+      \item Evaluation: [metric and protocol].
+    \end{itemize}
+  \end{block}
+  \begin{block}{Key contribution}
+    Describe what your approach adds and the conditions under which it applies.
+  \end{block}
+\end{column}
+% RIGHT COLUMN: main results and conclusions.
+\begin{column}{0.33\textwidth}
+  \begin{block}{3.\enspace Results}
+    \figureplaceholder{Main results figure}{13cm}
+    {\small Figure 3. State the observation, comparison, and relevant conditions.}
+    \par\medskip
+    Report the most meaningful quantitative result here. Include units and uncertainty where applicable.
+  \end{block}
+  \begin{alertblock}{4.\enspace Conclusions}
+    \begin{itemize}
+      \item Summarise the main finding.
+      \item Explain its practical significance.
+      \item State a limitation or next step.
+    \end{itemize}
+  \end{alertblock}
+\end{column}
+\end{columns}
+\end{frame}
+\end{document}

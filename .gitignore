@@ -1,0 +1,14 @@
+# Keep local compilation products separate from the reusable source files.
+/build/
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.vrb
+/poster-preview.png
+/ucy-daedalus-overleaf.zip
