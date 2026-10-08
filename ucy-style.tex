@@ -21,8 +21,17 @@
 \setbeamerfont{block body alerted}{size=\fontsize{30}{38}\selectfont}
 \setbeamerfont{headline author}{size=\fontsize{28}{34}\selectfont}
 \setbeamerfont{headline institute}{size=\fontsize{26}{32}\selectfont}
+\setbeamerfont{headline title}{size=\fontsize{48}{56}\selectfont,series=\bfseries}
 \setbeamersize{text margin left=2.5cm,text margin right=2.5cm}
 \newif\ifprojectlogos
+\newcommand{\posterfundingfirstline}{%
+  This group was funded by MINERVA through the European Research Council (ERC) under the}
+\newcommand{\posterfundingsecondline}{%
+  European Union’s Horizon 2022 research and innovation programme (Grant agreement No. 101044629).}
+\newcommand{\posteracknowledgement}{%
+  \posterfundingfirstline\space\posterfundingsecondline}
+\newsavebox{\posterfundinglinebox}
+\newlength{\posterfundingtextwidth}
 % Keep full author names, with comma separators instead of wide gaps.
 \makeatletter
 \newcommand{\posterauthors}{%
@@ -66,52 +75,122 @@
       text width=0.85\linewidth,text=MinervaTeal] {\bfseries #1};
   \end{tikzpicture}\par\smallskip
 }
+\newsavebox{\postertitlesavedbox}
+\newsavebox{\posterheadingsavedbox}
+\newsavebox{\posterqrsavedbox}
+\newlength{\posterqrtitleoffset}
+\newcommand{\posterheadingcontent}{%
+  \centering
+  {\usebeamerfont{headline title}\color{DaedalusBlue}\inserttitle\par}
+  \vspace{0.6cm}
+  {\usebeamerfont{headline author}\posterauthors}%
+  \hspace{0.7cm}%
+  {\color{Ink!55}\vrule width 1pt height 0.7cm depth 0.12cm}%
+  \hspace{0.7cm}%
+  {\usebeamerfont{headline institute}\insertinstitute}\par
+}
 \setbeamertemplate{headline}{%
   \begin{beamercolorbox}[wd=\paperwidth]{headline}
-    \vskip1.8cm
+    % Equal top/bottom padding centres the logo row vertically in the header.
+    \ifdefined\posterqrcode\vskip0.65cm\else\vskip1.7cm\fi
     \hspace{2.5cm}%
-    \begin{minipage}[c]{0.14\paperwidth}
+    \begin{minipage}[c]{0.19\paperwidth}
       \centering
-      \includegraphics[width=0.11\paperwidth]{\ucylogo}
+      % Compensate for the PNG's 11 px left border (324 px full width).
+      \makebox[0.141\paperwidth][l]{%
+        \hspace*{-0.00479\paperwidth}%
+        \includegraphics[width=0.141\paperwidth]{\ucylogo}}
     \end{minipage}\hfill
-    \begin{minipage}[c]{0.65\paperwidth}
-      \centering
-      {\usebeamerfont{headline title}\color{DaedalusBlue}\inserttitle\par}
-      \vspace{0.6cm}
-      {\usebeamerfont{headline author}\posterauthors}%
-      \hspace{0.7cm}%
-      {\color{Ink!55}\vrule width 1pt height 0.7cm depth 0.12cm}%
-      \hspace{0.7cm}%
-      {\usebeamerfont{headline institute}\insertinstitute}\par
+    \begin{minipage}[c]{0.56\paperwidth}
+      \ifdefined\posterqrcode
+        \sbox{\postertitlesavedbox}{{\usebeamerfont{headline title}\inserttitle}}%
+        \sbox{\posterheadingsavedbox}{%
+          \begin{minipage}[c][5.4cm][c]{\linewidth}
+            \posterheadingcontent
+          \end{minipage}}%
+        \sbox{\posterqrsavedbox}{%
+          \ifdefined\posterqrurl
+            \href{\posterqrurl}{\includegraphics[width=5.4cm]{\posterqrcode}}%
+          \else
+            \includegraphics[width=5.4cm]{\posterqrcode}%
+          \fi}%
+        % Overlay beside the actual title text without shifting its centre.
+        \ifdim\wd\postertitlesavedbox>\linewidth
+          \setlength{\posterqrtitleoffset}{-0.2cm}%
+        \else
+          \setlength{\posterqrtitleoffset}{\dimexpr(\linewidth-\wd\postertitlesavedbox)/2-0.2cm\relax}%
+        \fi
+        \noindent\makebox[0pt][l]{%
+          \hspace*{\posterqrtitleoffset}%
+          \makebox[0pt][r]{%
+            \raisebox{\dimexpr(\ht\posterheadingsavedbox-\dp\posterheadingsavedbox-\ht\posterqrsavedbox+\dp\posterqrsavedbox)/2\relax}[0pt][0pt]{\usebox{\posterqrsavedbox}}}}%
+        \usebox{\posterheadingsavedbox}\par
+      \else
+        \sbox{\posterheadingsavedbox}{%
+          \begin{minipage}{\linewidth}\posterheadingcontent\end{minipage}}%
+        \noindent\usebox{\posterheadingsavedbox}\par
+      \fi
     \end{minipage}\hfill
-    \begin{minipage}[c]{0.14\paperwidth}
+    \begin{minipage}[c]{0.19\paperwidth}
       \centering
-      \includegraphics[width=0.12\paperwidth]{\daedaluslogo}
+      \includegraphics[width=0.141\paperwidth]{\daedaluslogo}\par
     \end{minipage}\hspace{2.5cm}
-    \par\vspace{1.6cm}
+    \par\ifdefined\posterqrcode\vspace{0.65cm}\else\vspace{1.7cm}\fi
     {\color{UCYGold}\rule{\paperwidth}{0.10cm}}
   \end{beamercolorbox}
 }
 \setbeamertemplate{footline}{%
   \begin{beamercolorbox}[wd=\paperwidth]{poster footer}
     {\color{UCYGold}\rule{\paperwidth}{0.10cm}}\par
-    \vskip0.9cm
+    \vskip0.35cm
     \hspace{2.5cm}%
     \begin{minipage}{\dimexpr\paperwidth-5cm\relax}
-      \begin{minipage}[c]{0.68\linewidth}
-        {\fontsize{24}{29}\selectfont\bfseries\color{DaedalusBlue}Selected references\par}
+      \begin{minipage}[c]{\ifprojectlogos0.57\else0.98\fi\linewidth}
+        {\fontsize{26}{31}\selectfont\bfseries\color{DaedalusBlue}Selected references\par}
         \vspace{0.35cm}
-        {\fontsize{22}{28}\selectfont\raggedright\posterreferences\par}
+        {\fontsize{24}{29}\selectfont\raggedright\posterreferences\par}
       \end{minipage}\hfill
       \ifprojectlogos
-        \begin{minipage}[c]{0.26\linewidth}
+        % Put both funder logos in a row above the funding text.
+        \begin{minipage}[c]{0.40\linewidth}
+        \hspace{\dimexpr0.5cm+1.5pt\relax}%
+        \begin{minipage}[c]{44cm}
           \raggedleft
-          \raisebox{-0.5\height}{\includegraphics[width=9cm,height=4.2cm,keepaspectratio]{\minervalogo}}%
-          \hspace{1.2cm}%
-          \raisebox{-0.5\height}{\includegraphics[width=13cm,height=4.2cm,keepaspectratio]{\erclogo}}
+          \begingroup
+          \fontsize{22}{27}\selectfont
+          \sbox{\posterfundinglinebox}{\posterfundingfirstline}%
+          \setlength{\posterfundingtextwidth}{\wd\posterfundinglinebox}%
+          \sbox{\posterfundinglinebox}{\posterfundingsecondline}%
+          \ifdim\wd\posterfundinglinebox>\posterfundingtextwidth
+            \setlength{\posterfundingtextwidth}{\wd\posterfundinglinebox}%
+          \fi
+          \addtolength{\posterfundingtextwidth}{2cm}% More room between the logos.
+          % Right-position the block and justify both funding lines.
+          \begin{minipage}{\posterfundingtextwidth}
+            \raggedright
+            \ifdefined\dncslogo
+              \begin{minipage}[c]{11cm}
+                \includegraphics[width=\linewidth]{\dncslogo}
+              \end{minipage}\hfill
+            \fi
+            \begin{minipage}[c]{10cm}
+              \includegraphics[width=\linewidth,height=4.6cm,keepaspectratio]{\minervalogo}
+            \end{minipage}\hfill
+            \begin{minipage}[c]{13.2cm}
+              \includegraphics[width=\linewidth,height=4.6cm,keepaspectratio]{\erclogo}
+            \end{minipage}\par
+            \vspace{0.25cm}
+            \justifying
+            \setlength{\parfillskip}{0pt}% Justify the final line as well.
+            \posterfundingfirstline\linebreak
+            \posterfundingsecondline\par
+          \end{minipage}\par
+          \endgroup
+        \end{minipage}
         \end{minipage}
       \fi
     \end{minipage}
-    \par\vskip0.8cm
+    % Raise the footer as a whole by reserving a little more space below it.
+    \par\vskip0.85cm
   \end{beamercolorbox}
 }

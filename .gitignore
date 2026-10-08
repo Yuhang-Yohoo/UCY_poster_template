@@ -12,3 +12,13 @@
 *.vrb
 /poster-preview.png
 /ucy-daedalus-overleaf.zip
+
+# Local paper content and paper-specific QR assets are not part of the template.
+/paper/
+/paper-poster.tex
+/paper-poster.pdf
+/paper-poster-preview.png
+/graphics/QRcode.svg
+/graphics/QRcode.pdf
+/graphics/DNCSgroup-centered.svg
+/graphics/DNCSgroup-centered.pdf
